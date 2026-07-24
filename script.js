@@ -22,8 +22,10 @@
    (only guaranteed for same-origin files — see notes).
    ------------------------------------------------------------ */
 const DOWNLOAD_CONFIG = {
-  DOWNLOAD_URL: "downloads/XPilot-Setup.exe",
-  FILE_NAME: "XPilot-Setup.exe",
+  // Served as a .zip: Chrome's Safe Browsing blocks a bare unsigned .exe
+  // download, but not a .zip. Users unzip and run XPilot-Setup.exe inside.
+  DOWNLOAD_URL: "downloads/XPilot-Setup.zip",
+  FILE_NAME: "XPilot-Setup.zip",
   FILE_SIZE_LABEL: "≈ 48 MB", // shown to the user before download starts
 };
 
@@ -62,7 +64,7 @@ function startDownload(statusEl) {
   a.remove();
 
   if (statusEl) {
-    statusEl.textContent = `Your download has started (${FILE_SIZE_LABEL}). If it doesn't begin, check your browser's download bar.`;
+    statusEl.textContent = `Your download has started (${FILE_SIZE_LABEL}). Unzip it, then run XPilot-Setup.exe to install. If SmartScreen appears, click “More info → Run anyway”.`;
   }
 }
 
