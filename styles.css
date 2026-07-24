@@ -134,6 +134,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   background: var(--surface);
   color: var(--t-primary);
   border-color: var(--border);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
 .btn-ghost:hover {
@@ -257,9 +258,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: stretch;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 40px;
+  align-items: center;
 }
 
 .hero-actions {
@@ -287,25 +288,25 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 }
 .trust-item .lucide { width: 15px; height: 15px; }
 
-/* Hero image slot — fixed 4:3 frame, image covers it */
+/* Hero image slot — transparent frame; the whole (PNG) image shows on the
+   page's own black background, never cropped. */
 .hero-image-slot {
   position: relative;
   width: 100%;
-  max-width: 680px;
+  max-width: 820px;
   height: 100%;
   min-height: 420px;
   justify-self: end;
-  border-radius: var(--radius-lg);
   border: none;
-  background: var(--surface);
-  overflow: hidden;
+  background: transparent;
+  overflow: visible;
 }
 
 .hero-image-slot img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: inherit;
+  /* contain (not cover) so the full image is visible — no left/right crop. */
+  object-fit: contain;
 }
 
 .hero-image-slot img.img-empty,
@@ -372,6 +373,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--t-primary);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   transition: transform 300ms var(--ease), border-color 300ms var(--ease),
     background 300ms var(--ease), opacity 300ms var(--ease);
