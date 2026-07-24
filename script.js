@@ -24,7 +24,7 @@
 const DOWNLOAD_CONFIG = {
   DOWNLOAD_URL: "downloads/XPilot-Setup.exe",
   FILE_NAME: "XPilot-Setup.exe",
-  FILE_SIZE_LABEL: "≈ 1 GB", // shown to the user before download starts
+  FILE_SIZE_LABEL: "≈ 48 MB", // shown to the user before download starts
 };
 
 /* ------------------------------------------------------------
