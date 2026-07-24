@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XPilot — Automate Replies. Engage Smarter.</title>
+  <meta name="description" content="XPilot reads X (Twitter) posts, understands the context, and writes natural, human-like replies — automatically." />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="nav-wrap">
+    <nav class="navbar glass" aria-label="Main navigation">
+      <a href="#home" class="brand">
+        <svg class="x-logo" viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        <span>XPilot</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#pricing" class="nav-link">Pricing</a></li>
+        <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <a href="#" class="btn btn-ghost btn-nav-download js-download">
+          <i data-lucide="download"></i>
+          <span class="hide-sm">Download XPilot</span>
+          <span class="show-sm">Download</span>
+        </a>
+        <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu glass" hidden>
+      <a href="#home" class="nav-link">Home</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="#how-it-works" class="nav-link">How It Works</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= HERO ================= -->
+    <section id="home" class="hero section">
+      <div class="container hero-grid">
+        <div class="fade-up">
+          <h1 class="display-xl">Automate Replies.<br />Engage Smarter.</h1>
+          <p class="lead t-secondary">
+            XPilot reads X (Twitter) posts, understands the context, and writes
+            natural, human-like replies — automatically. Built for creators,
+            marketers and growth hackers.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#" class="btn btn-primary js-download"><i data-lucide="download"></i> Download XPilot</a>
+            <a href="#how-it-works" class="btn btn-ghost"><i data-lucide="play"></i> Watch Demo</a>
+          </div>
+
+          <div class="trust-bar glass">
+            <div class="trust-item"><i data-lucide="zap"></i><span>AI Powered</span></div>
+            <div class="trust-item"><i data-lucide="shield-check"></i><span>Secure &amp; Private</span></div>
+            <div class="trust-item"><i data-lucide="users"></i><span>Loved by 10K+ Users</span></div>
+          </div>
+        </div> 
+
+        <!-- HERO IMAGE SLOT ============================================
+             Paste your image URL into the src attribute below.
+             The slot is fixed at a 4:3 ratio (max 560px wide) and the
+             image will cover it automatically. -->
+        <div class="hero-image-slot fade-up delay-150">
+          <img
+            id="hero-image"
+            src="images/Picsart_26-07-20_14-44-55-899.png"
+            alt="XPilot app preview"
+            onerror="this.classList.add('img-empty')"
+            onload="this.classList.remove('img-empty')"
+          />
+          <div class="slot-hint">
+            <i data-lucide="image"></i>
+            <span>Hero image goes here<br /><small>560 × 420 (4:3) recommended</small></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FEATURES (horizontal scroll) ================= -->
+    <section id="features" class="section">
+      <div class="features-layout">
+        <div class="features-intro fade-up">
+          <p class="eyebrow">Features</p>
+          <h2 class="display-lg">Everything you need<br />to grow on X.</h2>
+          <div class="scroll-controls">
+            <button class="scroll-btn" data-dir="-1" aria-label="Scroll features left"><i data-lucide="arrow-left"></i></button>
+            <button class="scroll-btn" data-dir="1" aria-label="Scroll features right"><i data-lucide="arrow-right"></i></button>
+          </div>
+        </div>
+
+        <div class="features-track-wrap">
+          <div class="features-track" id="features-track">
+
+          <article class="feature-card glass glass-hover fade-up">
+            <div class="feature-icon"><i data-lucide="sparkles"></i></div>
+            <h3>AI-Powered Replies</h3>
+            <p class="t-secondary">Generate smart, context-aware replies that sound natural and human.</p>
+            <div class="mock-window">
+              <div class="mock-head"><svg class="x-logo" viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><i data-lucide="more-horizontal"></i></div>
+              <p class="mock-label">Generating reply…</p>
+              <div class="mock-bubble">
+                <p>That's a game changer! Excited to see where this goes. 🚀</p>
+                <i data-lucide="sparkles" class="accent"></i>
+              </div>
+            </div>
+          </article>
+
+          <article class="feature-card glass glass-hover fade-up">
+            <div class="feature-icon"><i data-lucide="crosshair"></i></div>
+            <h3>X (Twitter) Native</h3>
+            <p class="t-secondary">Built specifically for X. Works just like you do.</p>
+            <div class="mock-window">
+              <div class="mock-head"><svg class="x-logo" viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><i data-lucide="more-horizontal"></i></div>
+              <div class="mock-lines">
+                <span class="mock-line" style="width:72%"></span>
+                <span class="mock-line dim" style="width:50%"></span>
+                <span class="mock-line dim" style="width:60%"></span>
+              </div>
+              <div class="mock-chip-row">
+                <span class="mock-chip">X (Twitter) <i data-lucide="check" class="accent"></i></span>
+              </div>
+            </div>
+          </article>
+
+          <article class="feature-card glass glass-hover fade-up">
+            <div class="feature-icon"><i data-lucide="zap"></i></div>
+            <h3>One-Click Automation</h3>
+            <p class="t-secondary">Let XPilot handle the replies while you focus on growth.</p>
+            <div class="mock-window">
+              <div class="mock-head"><svg class="x-logo" viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><i data-lucide="more-horizontal"></i></div>
+              <div class="mock-flow">
+                <div class="flow-step"><span class="flow-box"><i data-lucide="image"></i></span><small>Open Post</small></div>
+                <i data-lucide="arrow-right" class="flow-arrow"></i>
+                <div class="flow-step"><span class="flow-box"><i data-lucide="sparkles"></i></span><small>Generate</small></div>
+                <i data-lucide="arrow-right" class="flow-arrow"></i>
+                <div class="flow-step"><span class="flow-box active"><i data-lucide="send"></i></span><small>Post Reply</small></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="feature-card glass glass-hover fade-up">
+            <div class="feature-icon"><i data-lucide="shield-check"></i></div>
+            <h3>Safe &amp; Private</h3>
+            <p class="t-secondary">Your data stays on your device. No data is collected.</p>
+            <div class="mock-window">
+              <div class="mock-head"><svg class="x-logo" viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><i data-lucide="more-horizontal"></i></div>
+              <div class="mock-bubble privacy">
+                <i data-lucide="shield-check" class="accent"></i>
+                <div>
+                  <p class="strong">Your data is safe</p>
+                  <p class="tiny t-tertiary">No data is collected or stored.</p>
+                </div>
+              </div>
+              <div class="mock-lock"><i data-lucide="lock"></i><span class="mock-line dim" style="width:45%"></span></div>
+            </div>
+          </article>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section id="how-it-works" class="section">
+      <div class="container hiw-grid">
+        <div class="fade-up">
+          <p class="eyebrow">How It Works</p>
+          <h2 class="display-lg">Simple. Fast.<br />Automated.</h2>
+          <p class="lead t-secondary">XPilot turns any X post into the perfect reply in just a few steps.</p>
+        </div>
+
+        <div class="timeline">
+          <div class="step fade-up">
+            <div class="step-rail"><span class="step-num">1</span><span class="step-line"></span></div>
+            <div class="step-body">
+              <h3>Add a Post Link</h3>
+              <p class="t-secondary">Paste any X (Twitter) post link you want to reply to.</p>
+            </div>
+          </div>
+          <div class="step fade-up delay-100">
+            <div class="step-rail"><span class="step-num">2</span><span class="step-line"></span></div>
+            <div class="step-body">
+              <h3>XPilot Analyzes</h3>
+              <p class="t-secondary">Our AI reads the post and understands the context.</p>
+            </div>
+          </div>
+          <div class="step fade-up delay-200">
+            <div class="step-rail"><span class="step-num">3</span><span class="step-line"></span></div>
+            <div class="step-body">
+              <h3>Generate Reply</h3>
+              <p class="t-secondary">XPilot writes a natural, human-like reply that fits the conversation.</p>
+            </div>
+          </div>
+          <div class="step fade-up delay-300">
+            <div class="step-rail"><span class="step-num">4</span></div>
+            <div class="step-body">
+              <h3>Post Automatically</h3>
+              <p class="t-secondary">Review and post the reply with one click.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PRICING ================= -->
+    <section id="pricing" class="section">
+      <div class="container pricing-grid">
+        <div class="fade-up">
+          <p class="eyebrow">Pricing</p>
+          <h2 class="display-lg">One simple plan.<br />Everything included.</h2>
+          <p class="lead t-secondary">No tiers, no upsells — one price, full power.</p>
+        </div>
+
+        <div class="pricing-cards pricing-single">
+          <article class="price-card card-pro glass glass-hover fade-up">
+            <div class="pro-head">
+              <h3>XPilot Monthly</h3>
+              <span class="badge-popular"><i data-lucide="sparkles"></i> Everything included</span>
+            </div>
+            <p class="t-tertiary tagline">Automate replies &amp; likes on X — the easy way.</p>
+            <div class="price-row"><span class="price">$9.50</span><span class="t-tertiary">/ month</span></div>
+            <ul class="feature-list pro">
+              <li><span class="tick pro"><i data-lucide="check"></i></span>750 AI replies per day</li>
+              <li><span class="tick pro"><i data-lucide="check"></i></span>750 likes per day</li>
+              <li><span class="tick pro"><i data-lucide="check"></i></span>Bulk link processing — paste many posts at once</li>
+              <li><span class="tick pro"><i data-lucide="check"></i></span>Multiple reply styles (professional, funny &amp; more)</li>
+              <li><span class="tick pro"><i data-lucide="check"></i></span>One-click auto-posting &amp; liking</li>
+              <li><span class="tick pro"><i data-lucide="check"></i></span>Human-like, one-at-a-time — keeps your account safe</li>
+              <li><span class="tick pro"><i data-lucide="check"></i></span>Daily credits reset every day</li>
+              <li><span class="tick pro"><i data-lucide="check"></i></span>Priority support</li>
+            </ul>
+            <a href="#download" class="btn btn-primary btn-block">Get XPilot <i data-lucide="arrow-right"></i></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= DOWNLOAD ================= -->
+    <section id="download" class="section download-section">
+      <div class="container narrow center fade-up">
+        <p class="eyebrow">Download</p>
+        <h2 class="display-lg">Ready to automate your replies?</h2>
+        <p class="lead t-secondary">Download XPilot now and start engaging smarter on X.</p>
+
+        <a href="#" class="btn btn-primary btn-xl btn-pulse js-download">
+          <i data-lucide="download"></i> Download XPilot
+        </a>
+
+        <p class="download-status t-secondary" id="download-status" role="status" aria-live="polite"></p>
+
+        <div class="platform-row t-tertiary">
+          <span>Windows 10 / 11</span>
+          <span class="accent-dot"></span>
+          <span>64-bit</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="container footer-row">
+      <a href="#home" class="brand">
+        <svg class="x-logo" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        <span>XPilot</span>
+      </a>
+      <div class="footer-links t-tertiary">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#how-it-works">How It Works</a>
+      </div>
+      <p class="t-tertiary tiny">© <span id="year"></span> XPilot</p>
+    </div>
+  </footer>
+
+</body>
+</html>
