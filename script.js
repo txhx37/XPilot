@@ -69,6 +69,91 @@ function startDownload(statusEl) {
 }
 
 /* ------------------------------------------------------------
+   2b. Browser extension
+   ------------------------------------------------------------
+   CHROME_ZIP_URL  — the extension for Chrome, Edge and Brave, loaded with
+                     Developer mode (no Chrome Web Store fee).
+   FIREFOX_URL     — the Firefox Add-ons (AMO) listing once Mozilla has
+                     signed it (free). Leave "" until then: the Firefox
+                     button stays disabled with a "coming soon" note.
+   ------------------------------------------------------------ */
+const EXTENSION_CONFIG = {
+  CHROME_ZIP_URL: "downloads/XPilot-Extension-Chrome.zip",
+  CHROME_ZIP_NAME: "XPilot-Extension-Chrome.zip",
+  FIREFOX_URL: "",
+  FIREFOX_ANDROID_STORE: "https://play.google.com/store/apps/details?id=org.mozilla.firefox",
+};
+
+function detectDevice() {
+  const ua = navigator.userAgent || "";
+  const android = /Android/i.test(ua);
+  const ios = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const firefox = /Firefox\//i.test(ua) || /FxiOS/i.test(ua);
+  return { android, ios, desktop: !android && !ios, firefox };
+}
+
+function initExtension() {
+  const chromeBtn = document.querySelector('.js-ext[data-ext="chrome"]');
+  const firefoxBtn = document.querySelector('.js-ext[data-ext="firefox"]');
+  const note = document.getElementById("ext-note");
+  const steps = document.getElementById("ext-steps");
+  if (!chromeBtn || !firefoxBtn || !note) return;
+
+  const device = detectDevice();
+  const firefoxReady = Boolean(EXTENSION_CONFIG.FIREFOX_URL);
+  const setNote = (html) => {
+    note.innerHTML = html;
+  };
+
+  if (device.android) {
+    // Chrome on Android cannot run extensions; Firefox for Android can.
+    chromeBtn.disabled = true;
+    if (!device.firefox) {
+      firefoxBtn.disabled = true;
+      setNote(
+        `On Android, XPilot works in the <strong>Firefox</strong> browser. Open this page in Firefox for Android to add the extension. ` +
+          `<a href="${EXTENSION_CONFIG.FIREFOX_ANDROID_STORE}" target="_blank" rel="noopener">Get Firefox for Android</a>`
+      );
+    } else if (!firefoxReady) {
+      firefoxBtn.disabled = true;
+      setNote("The Firefox version is coming soon — it is being reviewed by Mozilla.");
+    } else {
+      firefoxBtn.classList.replace("btn-ghost", "btn-primary");
+      setNote("Tap <strong>Add to Firefox</strong>, then open XPilot from Firefox's menu → Extensions.");
+    }
+  } else if (device.ios) {
+    chromeBtn.disabled = true;
+    firefoxBtn.disabled = true;
+    setNote("The XPilot extension isn't available on iPhone or iPad yet. Use it on a computer, or on Android in Firefox.");
+  } else {
+    if (!firefoxReady) firefoxBtn.disabled = true;
+    if (device.firefox && firefoxReady) firefoxBtn.classList.replace("btn-ghost", "btn-primary");
+    else if (!device.firefox) chromeBtn.classList.replace("btn-ghost", "btn-primary");
+    if (device.firefox && !firefoxReady) {
+      setNote("The Firefox version is coming soon — it is being reviewed by Mozilla. Chrome, Edge and Brave can use XPilot now.");
+    }
+  }
+
+  chromeBtn.addEventListener("click", () => {
+    if (chromeBtn.disabled) return;
+    const a = document.createElement("a");
+    a.href = EXTENSION_CONFIG.CHROME_ZIP_URL;
+    a.download = EXTENSION_CONFIG.CHROME_ZIP_NAME;
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setNote("Your download has started. Then follow these three steps:");
+    if (steps) steps.hidden = false;
+  });
+
+  firefoxBtn.addEventListener("click", () => {
+    if (firefoxBtn.disabled || !firefoxReady) return;
+    window.open(EXTENSION_CONFIG.FIREFOX_URL, "_blank", "noopener");
+  });
+}
+
+/* ------------------------------------------------------------
    3. Scroll reveal (fade-up)
    ------------------------------------------------------------ */
 function initScrollReveal() {
@@ -211,6 +296,7 @@ function initMisc() {
 document.addEventListener("DOMContentLoaded", () => {
   initMisc();
   initDownloadButtons();
+  initExtension();
   initScrollReveal();
   initFeaturesTrack();
   initNavbar();

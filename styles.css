@@ -665,6 +665,70 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   display: inline-block;
 }
 
+/* Browser extension card (download section) */
+.ext-card {
+  margin: 56px auto 0;
+  max-width: 640px;
+  padding: 28px;
+  text-align: left;
+}
+
+.ext-head {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.ext-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+}
+
+.ext-icon .lucide { width: 20px; height: 20px; }
+
+.ext-copy h3 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+.ext-copy p { font-size: 14px; line-height: 1.6; }
+
+.ext-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.ext-actions .btn { flex: 1 1 220px; padding: 14px 16px; white-space: nowrap; font-size: 14.5px; }
+
+.ext-actions .btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.ext-note {
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 20px;
+}
+
+.ext-note a { color: var(--t-primary); text-decoration: underline; }
+
+.ext-steps {
+  margin: 16px 0 0 20px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.ext-steps strong { color: var(--t-primary); font-weight: 600; }
+
 /* ---------- Footer ---------- */
 .footer { border-top: 1px solid var(--border); padding: 40px 0; }
 

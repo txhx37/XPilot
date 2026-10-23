@@ -269,6 +269,34 @@
           <span class="accent-dot"></span>
           <span>64-bit</span>
         </div>
+
+        <!-- Browser extension: same XPilot, inside the browser -->
+        <div class="ext-card glass" id="extension">
+          <div class="ext-head">
+            <span class="ext-icon"><i data-lucide="puzzle"></i></span>
+            <div class="ext-copy">
+              <h3>Or use XPilot in your browser</h3>
+              <p class="t-secondary">The same XPilot as a browser extension — nothing to install on your PC. Works in Chrome, Edge, Brave and Firefox, and on Android phones in Firefox.</p>
+            </div>
+          </div>
+
+          <div class="ext-actions">
+            <button type="button" class="btn btn-ghost js-ext" data-ext="chrome">
+              <i data-lucide="monitor"></i> Add to Chrome / Edge / Brave
+            </button>
+            <button type="button" class="btn btn-ghost js-ext" data-ext="firefox">
+              <i data-lucide="globe"></i> Add to Firefox
+            </button>
+          </div>
+
+          <p class="ext-note t-secondary" id="ext-note" role="status" aria-live="polite"></p>
+
+          <ol class="ext-steps t-secondary" id="ext-steps" hidden>
+            <li>Unzip the downloaded <strong>XPilot-Extension-Chrome.zip</strong>.</li>
+            <li>Open <strong>chrome://extensions</strong> (Edge: <strong>edge://extensions</strong>, Brave: <strong>brave://extensions</strong>) and switch on <strong>Developer mode</strong>.</li>
+            <li>Click <strong>Load unpacked</strong>, choose the unzipped folder, then click the XPilot icon in your toolbar.</li>
+          </ol>
+        </div>
       </div>
     </section>
   </main>
