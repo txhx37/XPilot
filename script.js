@@ -71,16 +71,19 @@ function startDownload(statusEl) {
 /* ------------------------------------------------------------
    2b. Browser extension
    ------------------------------------------------------------
-   CHROME_ZIP_URL  — the extension for Chrome, Edge and Brave, loaded with
-                     Developer mode (no Chrome Web Store fee).
-   FIREFOX_URL     — the Firefox Add-ons (AMO) listing once Mozilla has
-                     signed it (free). Leave "" until then: the Firefox
-                     button stays disabled with a "coming soon" note.
+   CHROME_ZIP_URL      — the extension for Chrome, Edge and Brave, loaded
+                         with Developer mode (no Chrome Web Store fee).
+   FIREFOX_XPI_URL     — the Mozilla-signed add-on file. Desktop Firefox
+                         installs it straight from this site.
+   FIREFOX_LISTING_URL — the Firefox Add-ons (AMO) listing. Leave "" until
+                         Mozilla approves it; once set, it is used on desktop
+                         and is what turns on the Android button.
    ------------------------------------------------------------ */
 const EXTENSION_CONFIG = {
   CHROME_ZIP_URL: "downloads/XPilot-Extension-Chrome.zip",
   CHROME_ZIP_NAME: "XPilot-Extension-Chrome.zip",
-  FIREFOX_URL: "",
+  FIREFOX_XPI_URL: "downloads/XPilot-Firefox.xpi",
+  FIREFOX_LISTING_URL: "",
   FIREFOX_ANDROID_STORE: "https://play.google.com/store/apps/details?id=org.mozilla.firefox",
 };
 
@@ -100,7 +103,8 @@ function initExtension() {
   if (!chromeBtn || !firefoxBtn || !note) return;
 
   const device = detectDevice();
-  const firefoxReady = Boolean(EXTENSION_CONFIG.FIREFOX_URL);
+  const listing = EXTENSION_CONFIG.FIREFOX_LISTING_URL;
+  const xpi = EXTENSION_CONFIG.FIREFOX_XPI_URL;
   const setNote = (html) => {
     note.innerHTML = html;
   };
@@ -114,9 +118,9 @@ function initExtension() {
         `On Android, XPilot works in the <strong>Firefox</strong> browser. Open this page in Firefox for Android to add the extension. ` +
           `<a href="${EXTENSION_CONFIG.FIREFOX_ANDROID_STORE}" target="_blank" rel="noopener">Get Firefox for Android</a>`
       );
-    } else if (!firefoxReady) {
+    } else if (!listing) {
       firefoxBtn.disabled = true;
-      setNote("The Firefox version is coming soon — it is being reviewed by Mozilla.");
+      setNote("XPilot for Firefox on Android is being reviewed by Mozilla and will be available here soon.");
     } else {
       firefoxBtn.classList.replace("btn-ghost", "btn-primary");
       setNote("Tap <strong>Add to Firefox</strong>, then open XPilot from Firefox's menu → Extensions.");
@@ -125,17 +129,16 @@ function initExtension() {
     chromeBtn.disabled = true;
     firefoxBtn.disabled = true;
     setNote("The XPilot extension isn't available on iPhone or iPad yet. Use it on a computer, or on Android in Firefox.");
+  } else if (device.firefox) {
+    firefoxBtn.classList.replace("btn-ghost", "btn-primary");
+    if (!listing && !xpi) firefoxBtn.disabled = true;
   } else {
-    if (!firefoxReady) firefoxBtn.disabled = true;
-    if (device.firefox && firefoxReady) firefoxBtn.classList.replace("btn-ghost", "btn-primary");
-    else if (!device.firefox) chromeBtn.classList.replace("btn-ghost", "btn-primary");
-    if (device.firefox && !firefoxReady) {
-      setNote("The Firefox version is coming soon — it is being reviewed by Mozilla. Chrome, Edge and Brave can use XPilot now.");
-    }
+    chromeBtn.classList.replace("btn-ghost", "btn-primary");
   }
 
   chromeBtn.addEventListener("click", () => {
     if (chromeBtn.disabled) return;
+    if (steps) steps.hidden = false;
     const a = document.createElement("a");
     a.href = EXTENSION_CONFIG.CHROME_ZIP_URL;
     a.download = EXTENSION_CONFIG.CHROME_ZIP_NAME;
@@ -144,12 +147,22 @@ function initExtension() {
     a.click();
     a.remove();
     setNote("Your download has started. Then follow these three steps:");
-    if (steps) steps.hidden = false;
   });
 
   firefoxBtn.addEventListener("click", () => {
-    if (firefoxBtn.disabled || !firefoxReady) return;
-    window.open(EXTENSION_CONFIG.FIREFOX_URL, "_blank", "noopener");
+    if (firefoxBtn.disabled) return;
+    if (steps) steps.hidden = true;
+    if (!device.firefox) {
+      setNote("Open this page in <strong>Firefox</strong> to add XPilot to Firefox.");
+      return;
+    }
+    if (listing) {
+      window.open(listing, "_blank", "noopener");
+      return;
+    }
+    // Desktop Firefox installs a signed add-on straight from the link.
+    window.location.href = xpi;
+    setNote("Firefox will ask to add XPilot — click <strong>Add</strong>, then click the XPilot icon in the toolbar.");
   });
 }
 
