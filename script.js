@@ -103,41 +103,30 @@ function initExtension() {
   if (!chromeBtn || !firefoxBtn || !note) return;
 
   const device = detectDevice();
+  const mobile = device.android || device.ios;
   const listing = EXTENSION_CONFIG.FIREFOX_LISTING_URL;
   const xpi = EXTENSION_CONFIG.FIREFOX_XPI_URL;
   const setNote = (html) => {
     note.innerHTML = html;
   };
+  const getFirefox = `<a href="${EXTENSION_CONFIG.FIREFOX_ANDROID_STORE}" target="_blank" rel="noopener">Get Firefox for Android</a>`;
 
-  if (device.android) {
-    // Chrome on Android cannot run extensions; Firefox for Android can.
-    chromeBtn.disabled = true;
-    if (!device.firefox) {
-      firefoxBtn.disabled = true;
-      setNote(
-        `On Android, XPilot works in the <strong>Firefox</strong> browser. Open this page in Firefox for Android to add the extension. ` +
-          `<a href="${EXTENSION_CONFIG.FIREFOX_ANDROID_STORE}" target="_blank" rel="noopener">Get Firefox for Android</a>`
-      );
-    } else if (!listing) {
-      firefoxBtn.disabled = true;
-      setNote("XPilot for Firefox on Android is being reviewed by Mozilla and will be available here soon.");
-    } else {
-      firefoxBtn.classList.replace("btn-ghost", "btn-primary");
-      setNote("Tap <strong>Add to Firefox</strong>, then open XPilot from Firefox's menu → Extensions.");
-    }
-  } else if (device.ios) {
-    chromeBtn.disabled = true;
-    firefoxBtn.disabled = true;
-    setNote("The XPilot extension isn't available on iPhone or iPad yet. Use it on a computer, or on Android in Firefox.");
-  } else if (device.firefox) {
-    firefoxBtn.classList.replace("btn-ghost", "btn-primary");
-    if (!listing && !xpi) firefoxBtn.disabled = true;
-  } else {
-    chromeBtn.classList.replace("btn-ghost", "btn-primary");
+  // Highlight the button that fits this browser. Nothing is ever disabled.
+  if (device.firefox) firefoxBtn.classList.replace("btn-ghost", "btn-primary");
+  else if (!mobile) chromeBtn.classList.replace("btn-ghost", "btn-primary");
+  if (mobile && !device.firefox) {
+    setNote(`You're on a phone: open this page in <strong>Firefox</strong> to use XPilot — it won't work in other mobile browsers. ${device.android ? getFirefox : ""}`);
   }
 
   chromeBtn.addEventListener("click", () => {
-    if (chromeBtn.disabled) return;
+    if (mobile) {
+      if (steps) steps.hidden = true;
+      setNote(
+        `Chrome on phones can't run extensions. On a phone, use <strong>Firefox</strong> and tap <strong>Add to Firefox</strong>. ` +
+          (device.android ? getFirefox : "")
+      );
+      return;
+    }
     if (steps) steps.hidden = false;
     const a = document.createElement("a");
     a.href = EXTENSION_CONFIG.CHROME_ZIP_URL;
@@ -150,19 +139,24 @@ function initExtension() {
   });
 
   firefoxBtn.addEventListener("click", () => {
-    if (firefoxBtn.disabled) return;
     if (steps) steps.hidden = true;
     if (!device.firefox) {
-      setNote("Open this page in <strong>Firefox</strong> to add XPilot to Firefox.");
+      setNote(
+        `Open this page in <strong>Firefox</strong> to add XPilot to Firefox.` + (device.android ? ` ${getFirefox}` : "")
+      );
       return;
     }
     if (listing) {
       window.open(listing, "_blank", "noopener");
       return;
     }
-    // Desktop Firefox installs a signed add-on straight from the link.
+    // The Mozilla-signed add-on: Firefox offers to install it straight away.
     window.location.href = xpi;
-    setNote("Firefox will ask to add XPilot — click <strong>Add</strong>, then click the XPilot icon in the toolbar.");
+    setNote(
+      mobile
+        ? "Firefox will ask to add XPilot — tap <strong>Add</strong>, then open XPilot from Firefox's menu → Extensions."
+        : "Firefox will ask to add XPilot — click <strong>Add</strong>, then click the XPilot icon in the toolbar."
+    );
   });
 }
 
