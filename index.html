@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>XPilot — Automate Replies. Engage Smarter.</title>
   <meta name="description" content="XPilot reads X (Twitter) posts, understands the context, and writes natural, human-like replies — automatically." />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=20261024c" />
   <script src="https://unpkg.com/lucide@latest" defer></script>
-  <script src="script.js" defer></script>
+  <script src="script.js?v=20261024c" defer></script>
 </head>
 <body>
 
@@ -291,6 +291,13 @@
 
           <p class="ext-hint t-tertiary"><i data-lucide="smartphone"></i><span>On a phone? Use <strong>Firefox</strong> — XPilot's extension doesn't work in other mobile browsers.</span></p>
           <p class="ext-note t-secondary" id="ext-note" role="status" aria-live="polite"></p>
+
+          <ol class="ext-steps t-secondary" id="ext-steps-android" hidden>
+            <li>Let <strong>XPilot-Firefox.xpi</strong> finish downloading.</li>
+            <li>In Firefox, open <strong>⋮ → Settings → About Firefox</strong> and tap the Firefox logo <strong>5 times</strong>.</li>
+            <li>Go back to <strong>Settings</strong>, tap <strong>Install extension from file</strong> and choose <strong>XPilot-Firefox.xpi</strong>, then tap <strong>Add</strong>.</li>
+            <li>Open XPilot from <strong>⋮ → Extensions → XPilot</strong>.</li>
+          </ol>
 
           <ol class="ext-steps t-secondary" id="ext-steps" hidden>
             <li>Unzip the downloaded <strong>XPilot-Extension-Chrome.zip</strong>.</li>

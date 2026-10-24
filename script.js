@@ -73,17 +73,21 @@ function startDownload(statusEl) {
    ------------------------------------------------------------
    CHROME_ZIP_URL      — the extension for Chrome, Edge and Brave, loaded
                          with Developer mode (no Chrome Web Store fee).
-   FIREFOX_XPI_URL     — the Mozilla-signed add-on file. Desktop Firefox
-                         installs it straight from this site.
-   FIREFOX_LISTING_URL — the Firefox Add-ons (AMO) listing. Leave "" until
-                         Mozilla approves it; once set, it is used on desktop
-                         and is what turns on the Android button.
+   FIREFOX_XPI_URL     — the Mozilla-signed add-on file hosted here.
+   FIREFOX_ADDON_ID    — XPilot on Firefox Add-ons (AMO). The page asks AMO
+                         whether the listing is public; when it is, "Add to
+                         Firefox" goes to Mozilla's one-tap install (desktop
+                         and Android) automatically. Until then desktop
+                         Firefox installs the signed file and Android shows
+                         the install-from-file steps.
    ------------------------------------------------------------ */
 const EXTENSION_CONFIG = {
   CHROME_ZIP_URL: "downloads/XPilot-Extension-Chrome.zip",
   CHROME_ZIP_NAME: "XPilot-Extension-Chrome.zip",
   FIREFOX_XPI_URL: "downloads/XPilot-Firefox.xpi",
-  FIREFOX_LISTING_URL: "",
+  FIREFOX_XPI_NAME: "XPilot-Firefox.xpi",
+  FIREFOX_ADDON_ID: "xpilot@txhx37.github.io",
+  FIREFOX_LISTING_URL: "https://addons.mozilla.org/firefox/addon/xpilot/",
   FIREFOX_ANDROID_STORE: "https://play.google.com/store/apps/details?id=org.mozilla.firefox",
 };
 
@@ -95,24 +99,47 @@ function detectDevice() {
   return { android, ios, desktop: !android && !ios, firefox };
 }
 
+function downloadFile(url, name) {
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name;
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
 function initExtension() {
   const chromeBtn = document.querySelector('.js-ext[data-ext="chrome"]');
   const firefoxBtn = document.querySelector('.js-ext[data-ext="firefox"]');
   const note = document.getElementById("ext-note");
   const steps = document.getElementById("ext-steps");
+  const androidSteps = document.getElementById("ext-steps-android");
   if (!chromeBtn || !firefoxBtn || !note) return;
 
   const device = detectDevice();
   const mobile = device.android || device.ios;
-  const listing = EXTENSION_CONFIG.FIREFOX_LISTING_URL;
-  const xpi = EXTENSION_CONFIG.FIREFOX_XPI_URL;
   const setNote = (html) => {
     note.innerHTML = html;
   };
+  const showSteps = (which) => {
+    if (steps) steps.hidden = which !== "chrome";
+    if (androidSteps) androidSteps.hidden = which !== "android";
+  };
   const getFirefox = `<a href="${EXTENSION_CONFIG.FIREFOX_ANDROID_STORE}" target="_blank" rel="noopener">Get Firefox for Android</a>`;
 
+  // Is XPilot public on Firefox Add-ons yet? (Checked live, so the button
+  // switches to Mozilla's one-tap install the moment it is approved.)
+  let listingUrl = null;
+  fetch(`https://addons.mozilla.org/api/v5/addons/addon/${encodeURIComponent(EXTENSION_CONFIG.FIREFOX_ADDON_ID)}/`)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => {
+      if (d && d.status === "public" && !d.is_disabled) listingUrl = d.url || EXTENSION_CONFIG.FIREFOX_LISTING_URL;
+    })
+    .catch(() => {});
+
   // Highlight the button that fits this browser. Nothing is ever disabled.
-  if (device.firefox) firefoxBtn.classList.replace("btn-ghost", "btn-primary");
+  if (device.firefox && !device.ios) firefoxBtn.classList.replace("btn-ghost", "btn-primary");
   else if (!mobile) chromeBtn.classList.replace("btn-ghost", "btn-primary");
   if (mobile && !device.firefox) {
     setNote(`You're on a phone: open this page in <strong>Firefox</strong> to use XPilot — it won't work in other mobile browsers. ${device.android ? getFirefox : ""}`);
@@ -120,42 +147,44 @@ function initExtension() {
 
   chromeBtn.addEventListener("click", () => {
     if (mobile) {
-      if (steps) steps.hidden = true;
+      showSteps(null);
       setNote(
         `Chrome on phones can't run extensions. On a phone, use <strong>Firefox</strong> and tap <strong>Add to Firefox</strong>. ` +
           (device.android ? getFirefox : "")
       );
       return;
     }
-    if (steps) steps.hidden = false;
-    const a = document.createElement("a");
-    a.href = EXTENSION_CONFIG.CHROME_ZIP_URL;
-    a.download = EXTENSION_CONFIG.CHROME_ZIP_NAME;
-    a.rel = "noopener";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    showSteps("chrome");
+    downloadFile(EXTENSION_CONFIG.CHROME_ZIP_URL, EXTENSION_CONFIG.CHROME_ZIP_NAME);
     setNote("Your download has started. Then follow these three steps:");
   });
 
   firefoxBtn.addEventListener("click", () => {
-    if (steps) steps.hidden = true;
+    showSteps(null);
+    if (device.ios) {
+      setNote("The XPilot extension isn't available on iPhone or iPad yet. Use it on a computer, or on Android in Firefox.");
+      return;
+    }
     if (!device.firefox) {
-      setNote(
-        `Open this page in <strong>Firefox</strong> to add XPilot to Firefox.` + (device.android ? ` ${getFirefox}` : "")
-      );
+      setNote(`Open this page in <strong>Firefox</strong> to add XPilot to Firefox.` + (device.android ? ` ${getFirefox}` : ""));
       return;
     }
-    if (listing) {
-      window.open(listing, "_blank", "noopener");
+    if (listingUrl) {
+      // Mozilla's own install page: one tap on "Add to Firefox" there.
+      window.location.href = listingUrl;
       return;
     }
-    // The Mozilla-signed add-on: Firefox offers to install it straight away.
-    window.location.href = xpi;
+    if (device.android) {
+      // Firefox for Android installs files from other sites via its settings.
+      downloadFile(EXTENSION_CONFIG.FIREFOX_XPI_URL, EXTENSION_CONFIG.FIREFOX_XPI_NAME);
+      showSteps("android");
+      setNote("XPilot is downloading. Install it in Firefox with these steps:");
+      return;
+    }
+    // Desktop Firefox installs the Mozilla-signed file straight from the link.
+    window.location.href = EXTENSION_CONFIG.FIREFOX_XPI_URL;
     setNote(
-      mobile
-        ? "Firefox will ask to add XPilot — tap <strong>Add</strong>, then open XPilot from Firefox's menu → Extensions."
-        : "Firefox will ask to add XPilot — click <strong>Add</strong>, then click the XPilot icon in the toolbar."
+      "If Firefox says it prevented this site from installing software, click <strong>Continue to Installation</strong>, then <strong>Add</strong>. Then click the XPilot icon in the toolbar."
     );
   });
 }
